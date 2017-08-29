@@ -149,4 +149,12 @@ class Person
     {
         $this->comment = $comment;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return "$this->firstName;$this->lastName;$this->email;$this->phoneNumber1;$this->phoneNumber2;$this->comment;";
+    }
 }

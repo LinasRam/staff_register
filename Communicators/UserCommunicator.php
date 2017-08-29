@@ -1,11 +1,28 @@
 <?php
 
+namespace Communicators;
+
+use Person;
+
 /**
  * Class UserCommunicator
  * Used for communication with user.
  */
 class UserCommunicator
 {
+    /**
+     * @var DatabaseCommunicator;
+     */
+    protected $databaseCommunicator;
+
+    /**
+     * UserCommunicator constructor.
+     */
+    public function __construct()
+    {
+        $this->databaseCommunicator = new DatabaseCommunicator();
+    }
+
     /**
      * Runs dialog for user to communicate.
      */
@@ -78,7 +95,13 @@ class UserCommunicator
 
         $person = new Person($firstName, $lastName, $email, $phoneNumber1, $phoneNumber2, $comment);
 
-        // @todo: registerPerson($person)
+        $result = $this->databaseCommunicator->insertPerson($person);
+
+        if (!empty($result)) {
+            echo "Person registered successfully.";
+        } else {
+            echo "Unexpected error occurred while trying to register new person.";
+        }
     }
 
     /**
@@ -89,7 +112,13 @@ class UserCommunicator
         echo "Enter email of person you want to delete: ";
         $email = trim(fgets(STDIN));
 
-        // @todo: deletePersonByEmail($email)
+        $result = $this->databaseCommunicator->deletePersonByEmail($email);
+
+        if (!empty($result)) {
+            echo "Person with entered email deleted successfully.";
+        } else {
+            echo "Unexpected error occurred while trying to delete person with entered email.";
+        }
     }
 
     /**
@@ -100,7 +129,22 @@ class UserCommunicator
         echo "Enter email of person you want to find: ";
         $email = trim(fgets(STDIN));
 
-        // @todo: findPersonByEmail($email)
+        $result = $this->databaseCommunicator->findPersonByEmail($email);
+
+        if (!empty($result)) {
+            $firstName = $result['first_name'];
+            $lastName = $result['last_name'];
+            $email = $result['email'];
+            $phoneNumber1 = $result['phone_no_1'];
+            $phoneNumber2 = $result['phone_no_2'];
+            $comment = $result['comment'];
+
+            $person = new Person($firstName, $lastName, $email, $phoneNumber1, $phoneNumber2, $comment);
+
+            echo $person;
+        } else {
+            echo "Person not found";
+        }
     }
 
     /**
