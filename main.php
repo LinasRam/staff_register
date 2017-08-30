@@ -1,6 +1,6 @@
 <?php
 
-require 'autoload.php';
+require 'vendor/autoload.php';
 require 'settings.php';
 
 use src\Communicators\UserCommunicator;
