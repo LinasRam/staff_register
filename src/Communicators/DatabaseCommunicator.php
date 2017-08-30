@@ -1,10 +1,11 @@
 <?php
 
-namespace Communicators;
+namespace src\Communicators;
 
 use PDO;
 use PDOException;
-use Person;
+use src\Person\Person;
+use src\Person\PersonValidator;
 
 /**
  * Class DatabaseCommunicator
@@ -12,13 +13,29 @@ use Person;
 class DatabaseCommunicator
 {
     /**
+     * @var PersonValidator
+     */
+    protected $personValidator;
+
+    /**
+     * DatabaseCommunicator constructor.
+     */
+    public function __construct()
+    {
+        $this->personValidator = new PersonValidator();
+    }
+
+    /**
      * Inserts person to database.
-     *
      * @param Person $person
      * @return mixed
      */
     public function insertPerson($person)
     {
+        if (!$this->personValidator->validate($person) || $this->personExists($person)) {
+            return false;
+        }
+
         $query = "INSERT INTO persons (first_name, last_name, email, phone_no_1, phone_no_2, comment) VALUES (:first_name, :last_name, :email, :phone_no_1, :phone_no_2, :comment)";
         $preparedData = [
             'first_name' => $person->getFirstName(),
@@ -33,8 +50,7 @@ class DatabaseCommunicator
     }
 
     /**
-     * Deleted person from database by email.
-     *
+     * Deletes person from database by email.
      * @param string $email
      * @return mixed
      */
@@ -46,6 +62,11 @@ class DatabaseCommunicator
         return $this->executeQuery($query, $preparedData);
     }
 
+    /**
+     * Returns person by email.
+     * @param string $email
+     * @return mixed
+     */
     public function findPersonByEmail($email)
     {
         $query = "SELECT * FROM persons WHERE email = :email";
@@ -55,8 +76,42 @@ class DatabaseCommunicator
     }
 
     /**
+     * Imports persons to database form CSV file. Returns number of imported persons.
+     * @param string $path
+     * @return int
+     */
+    public function importPersons($path)
+    {
+        $personsInserted = 0;
+        $handle = fopen($path, "r");
+
+        if (!empty($handle)) {
+            while ($data = fgetcsv($handle, 1000, ";")) {
+                $person = new Person($data[0], $data[1], $data[2], $data[3], $data[4], $data[5]);
+                $result = $this->insertPerson($person);
+
+                if (!empty($result)) {
+                    $personsInserted++;
+                }
+            }
+            fclose($handle);
+        }
+
+        return $personsInserted;
+    }
+
+    /**
+     * Checks if person already exists in database.
+     * @param Person $person
+     * @return mixed
+     */
+    protected function personExists($person)
+    {
+        return $this->findPersonByEmail($person->getEmail());
+    }
+
+    /**
      * Returns PDO connection.
-     *
      * @return PDO
      */
     protected function getConnection()
@@ -69,7 +124,6 @@ class DatabaseCommunicator
 
     /**
      * Executes query to database with provided prepared data.
-     *
      * @param string $query
      * @param array $preparedData
      * @param bool $fetch

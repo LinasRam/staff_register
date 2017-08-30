@@ -3,7 +3,7 @@
 require 'autoload.php';
 require 'settings.php';
 
-use Communicators\UserCommunicator;
+use src\Communicators\UserCommunicator;
 
 $userCommunicator = new UserCommunicator();
 $userCommunicator->run();

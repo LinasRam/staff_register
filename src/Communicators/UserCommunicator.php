@@ -1,8 +1,8 @@
 <?php
 
-namespace Communicators;
+namespace src\Communicators;
 
-use Person;
+use src\Person\Person;
 
 /**
  * Class UserCommunicator
@@ -48,7 +48,6 @@ class UserCommunicator
 
     /**
      * Continues communication with user according to provided action.
-     *
      * @param string $action
      */
     protected function processAction($action)
@@ -155,6 +154,8 @@ class UserCommunicator
         echo "Enter path to CSV file: ";
         $path = trim(fgets(STDIN));
 
-        // @todo: importPersons($path)
+        $result = $this->databaseCommunicator->importPersons($path);
+
+        echo "$result persons imported.";
     }
 }

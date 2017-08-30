@@ -1,5 +1,7 @@
 <?php
 
+namespace src\Person;
+
 /**
  * Class Person
  */
