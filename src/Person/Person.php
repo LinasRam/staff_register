@@ -4,41 +4,43 @@ namespace src\Person;
 
 /**
  * Class Person
+ * @package src\Person
  */
 class Person
 {
     /**
      * @var string
      */
-    protected $firstName;
+    private $firstName;
 
     /**
      * @var string
      */
-    protected $lastName;
+    private $lastName;
 
     /**
      * @var string
      */
-    protected $email;
+    private $email;
 
     /**
      * @var string
      */
-    protected $phoneNumber1;
+    private $phoneNumber1;
 
     /**
      * @var string
      */
-    protected $phoneNumber2;
+    private $phoneNumber2;
 
     /**
      * @var string
      */
-    protected $comment;
+    private $comment;
 
     /**
      * Person constructor.
+     *
      * @param string $firstName
      * @param string $lastName
      * @param string $email
@@ -46,7 +48,7 @@ class Person
      * @param string $phoneNumber2
      * @param string $comment
      */
-    public function __construct($firstName, $lastName, $email, $phoneNumber1, $phoneNumber2, $comment)
+    public function __construct(string $firstName, string $lastName, string $email, string $phoneNumber1, string $phoneNumber2, string $comment)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -155,7 +157,7 @@ class Person
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return "$this->firstName;$this->lastName;$this->email;$this->phoneNumber1;$this->phoneNumber2;$this->comment;";
     }

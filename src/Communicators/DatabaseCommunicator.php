@@ -9,13 +9,14 @@ use src\Person\PersonValidator;
 
 /**
  * Class DatabaseCommunicator
+ * @package src\Communicators
  */
 class DatabaseCommunicator
 {
     /**
      * @var PersonValidator
      */
-    protected $personValidator;
+    private $personValidator;
 
     /**
      * DatabaseCommunicator constructor.
@@ -27,7 +28,9 @@ class DatabaseCommunicator
 
     /**
      * Inserts person to database.
+     *
      * @param Person $person
+     *
      * @return mixed
      */
     public function insertPerson($person)
@@ -51,7 +54,9 @@ class DatabaseCommunicator
 
     /**
      * Deletes person from database by email.
+     *
      * @param string $email
+     *
      * @return mixed
      */
     public function deletePersonByEmail($email)
@@ -64,7 +69,9 @@ class DatabaseCommunicator
 
     /**
      * Returns person by email.
+     *
      * @param string $email
+     *
      * @return mixed
      */
     public function findPersonByEmail($email)
@@ -77,7 +84,9 @@ class DatabaseCommunicator
 
     /**
      * Imports persons to database form CSV file. Returns number of imported persons.
+     *
      * @param string $path
+     *
      * @return int
      */
     public function importPersons($path)
@@ -102,19 +111,22 @@ class DatabaseCommunicator
 
     /**
      * Checks if person already exists in database.
+     *
      * @param Person $person
+     *
      * @return mixed
      */
-    protected function personExists($person)
+    private function personExists($person)
     {
         return $this->findPersonByEmail($person->getEmail());
     }
 
     /**
      * Returns PDO connection.
+     *
      * @return PDO
      */
-    protected function getConnection()
+    private function getConnection(): PDO
     {
         $conn = new PDO("mysql:host=" . SERVER_NAME . ";dbname=" . DB_NAME, DB_USERNAME, DB_PASSWORD);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -124,12 +136,14 @@ class DatabaseCommunicator
 
     /**
      * Executes query to database with provided prepared data.
+     *
      * @param string $query
      * @param array $preparedData
      * @param bool $fetch
+     *
      * @return mixed
      */
-    protected function executeQuery($query, $preparedData, $fetch = false)
+    private function executeQuery($query, $preparedData, $fetch = false)
     {
         $result = false;
 

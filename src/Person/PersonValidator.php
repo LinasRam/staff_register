@@ -2,14 +2,19 @@
 
 namespace src\Person;
 
+/**
+ * Class PersonValidator
+ * @package src\Person
+ */
 class PersonValidator
 {
     /**
      * Validates person.
+     *
      * @param Person $person
      * @return bool
      */
-    public function validate($person)
+    public function validate(Person $person): bool
     {
         $invalidValues = 0;
 
@@ -40,10 +45,12 @@ class PersonValidator
 
     /**
      * Validates name.
+     *
      * @param string $name
+     *
      * @return bool
      */
-    protected function validateName($name)
+    private function validateName(string $name): bool
     {
         if (empty($name) || preg_match('/[0-9]+/', $name) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $name) || strlen($name) > 32) {
             return false;
@@ -53,10 +60,12 @@ class PersonValidator
 
     /**
      * Validates email.
+     *
      * @param string $email
+     *
      * @return bool
      */
-    protected function validateEmail($email)
+    private function validateEmail(string $email): bool
     {
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 32) {
             return false;
@@ -66,10 +75,12 @@ class PersonValidator
 
     /**
      * Validates phone number.
+     *
      * @param string $number
+     *
      * @return bool
      */
-    protected function validatePhoneNumber($number)
+    private function validatePhoneNumber(string $number): bool
     {
         if (empty($number) || !preg_match('/^\+?\d+$/', $number) || strlen($number) > 16) {
             return false;
@@ -79,10 +90,12 @@ class PersonValidator
 
     /**
      * Validates comment.
+     *
      * @param string $comment
+     *
      * @return bool
      */
-    protected function validateComment($comment)
+    private function validateComment(string $comment): bool
     {
         if (empty($comment) || strlen($comment) > 256) {
             return false;

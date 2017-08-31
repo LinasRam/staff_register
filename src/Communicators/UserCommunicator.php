@@ -6,14 +6,14 @@ use src\Person\Person;
 
 /**
  * Class UserCommunicator
- * Used for communication with user.
+ * @package src\Communicators
  */
 class UserCommunicator
 {
     /**
      * @var DatabaseCommunicator;
      */
-    protected $databaseCommunicator;
+    private $databaseCommunicator;
 
     /**
      * UserCommunicator constructor.
@@ -48,9 +48,10 @@ class UserCommunicator
 
     /**
      * Continues communication with user according to provided action.
+     *
      * @param string $action
      */
-    protected function processAction($action)
+    private function processAction(string $action)
     {
         switch ($action) {
             case 'register':
@@ -77,7 +78,7 @@ class UserCommunicator
     /**
      * Continues communication with user for 'register' action.
      */
-    protected function processRegister()
+    private function processRegister()
     {
         echo "Enter first name: ";
         $firstName = trim(fgets(STDIN));
@@ -99,14 +100,14 @@ class UserCommunicator
         if (!empty($result)) {
             echo "Person registered successfully.";
         } else {
-            echo "Unexpected error occurred while trying to register new person.";
+            echo "Unexpected error occurred while trying to register new person. Probably, person with entered email already exists.";
         }
     }
 
     /**
      * Continues communication with user for 'delete' action.
      */
-    protected function processDelete()
+    private function processDelete()
     {
         echo "Enter email of person you want to delete: ";
         $email = trim(fgets(STDIN));
@@ -123,7 +124,7 @@ class UserCommunicator
     /**
      * Continues communication with user for 'find' action.
      */
-    protected function processFind()
+    private function processFind()
     {
         echo "Enter email of person you want to find: ";
         $email = trim(fgets(STDIN));
@@ -149,7 +150,7 @@ class UserCommunicator
     /**
      * Continues communication with user for 'import' action.
      */
-    protected function processImport()
+    private function processImport()
     {
         echo "Enter path to CSV file: ";
         $path = trim(fgets(STDIN));
